@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <form @submit.prevent="onSubmit" class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Ingresar</h1>
+      <h1 class="h3 mb-3 font-weight-normal text-center">Ingresar</h1>
 
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
@@ -32,52 +32,59 @@
 
 <script>
 import router from "vue-router";
+import loginUserService from "../services/authentication/loginService";
 
 export default {
   name: "Login",
   data() {
     return {
-      email: "",
-      password: ""
+      email: '',
+      password: '',
+      provider: ''
     };
   },
 
   methods: {
     onSubmit() {
-      this.$validator.validate().then(valid => {
-        if (!valid) {
-          // do stuff if not valid.
-        } else {
-          localStorage.setItem("tk", "qwerty");
-          this.$router.push({name: "welcome"});
-        }
-      });
+      // this.$validator.validate().then(valid => {
+      //   if (!valid) {
+      //     // do stuff if not valid.
+      //   } else {
+      //     localStorage.setItem("tk", "qwerty");
+      //     this.$router.push({name: "welcome"});
+      //   }
+      // });
+      if (this.isValid()) {
+        loginUserService(this.email, this.password, this.provider)
+          .then((res) => {
+            localStorage.setItem('token', res.data.token);
+            this.$router.push({name: 'welcome'});
+          }, (error) => {
+            alert(error);
+          });
+      } else {
+        alert('Debes llenar los campos correctamente.');
+      }
+    },
+
+    isValid() {
+      let isValid = true;
+      if (this.email === '' || this.password === '') {
+        isValid = false;
+      }
+      return isValid;
     }
   }
 };
 </script>
 
 <style scoped>
-html,
-body {
-  height: 100%;
-}
-
-body {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
-}
-
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  max-width: 430px;
   padding: 15px;
   margin: auto;
+  border: 3px solid #f1f1f1
 }
 .form-signin .checkbox {
   font-weight: 400;
@@ -98,7 +105,7 @@ body {
   border-bottom-left-radius: 0;
 }
 .form-signin input[type="password"] {
-  margin-bottom: 10px;
+  margin-bottom: 25px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

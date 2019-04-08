@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const loginUserService = async (email, password, provider) => {
-  const endpoint = 'https://crm.redcapital.pe/api/logout';
+const loginUserService = async (email, password) => {
+  const endpoint = 'https://crm.redcapital.pe/api/login';
 
   const body = {
     email,
     password,
-    provider
+    provider: 'users'
   };
 
   return await axios.post(endpoint, body);
