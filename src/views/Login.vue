@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import router from "vue-router";
-import loginUserService from "../services/authentication/loginService";
+import router from 'vue-router';
+import loginUserService from '../services/authentication/loginService';
 
 export default {
   name: "Login",
@@ -46,22 +46,16 @@ export default {
 
   methods: {
     onSubmit() {
-      // this.$validator.validate().then(valid => {
-      //   if (!valid) {
-      //     // do stuff if not valid.
-      //   } else {
-      //     localStorage.setItem("tk", "qwerty");
-      //     this.$router.push({name: "welcome"});
-      //   }
-      // });
       if (this.isValid()) {
-        loginUserService(this.email, this.password, this.provider)
-          .then((res) => {
-            localStorage.setItem('token', res.data.token);
-            this.$router.push({name: 'welcome'});
-          }, (error) => {
+        loginUserService(this.email, this.password, this.provider).then(
+          res => {
+            localStorage.setItem('token', res.data.data.token);
+            this.$router.push({ name: 'welcome' });
+          },
+          error => {
             alert(error);
-          });
+          }
+        );
       } else {
         alert('Debes llenar los campos correctamente.');
       }
@@ -69,7 +63,7 @@ export default {
 
     isValid() {
       let isValid = true;
-      if (this.email === '' || this.password === '') {
+      if (this.email === "" || this.password === "") {
         isValid = false;
       }
       return isValid;
@@ -84,7 +78,7 @@ export default {
   max-width: 430px;
   padding: 15px;
   margin: auto;
-  border: 3px solid #f1f1f1
+  border: 3px solid #f1f1f1;
 }
 .form-signin .checkbox {
   font-weight: 400;
